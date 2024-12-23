@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:700|Roboto:100,300,700');
+
+body {
+    font-family: Roboto;
+    font-size: 5px;
+    line-height: 3.5em;
+    /* font-weight: 300; */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: Roboto Condensed;
+}
+
+h1 {
+    font-size: 3em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.container {
+    position: relative;
+    padding: 7rem 0;
+}
+
+
+.schedule-table {
+    margin: 30px auto 40px auto;
+    font-size: 1.25em;
+}
+
+.schedule-table th,
+td {
+    border-bottom: 1px solid black;
+    padding: 30px 20px 30px 20px;
+    text-align: center;
+}
+
+.slot-form-container {
+    width: 50%;
+    margin: 18px auto 0 auto;
+    font-size: 1.5em;
+    text-align: center;
+
+}
+
+.slot-form-container label {
+    line-height: 15px;
+    margin: 5px;
+}
+
+.slot-form-container select,
+input {
+    width: 100%;
+    border: none;
+    border-bottom: 3px solid black;
+    margin-bottom: 1rem;
+    outline: transparent;
+}
+
+.slot-form-container div {
+    border: 1px solid black;
+    color: black;
+    background-color: white;
+    padding: 9px 9px 9px 9px;
+    margin-top: 15px;
+}
+
+.input {
+    border: none;
+    border-bottom: 3px solid black;
+    margin-bottom: 1rem;
+    background: transparent;
+    outline: transparent;
+    height: 100%;
+    font-size: large;
+}
+
+.btn {
+    border: 3px solid black;
+    outline: none;
+    cursor: pointer;
+    background: #B76080;
+}
+
+.btnlogout {
+    margin-top: 40px;
+    margin-left: 30px;
+    border-radius: 20px;
+    background-color: black;
+    color: #fff;
+}

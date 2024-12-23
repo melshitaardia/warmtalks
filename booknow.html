@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Counseling</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="booknow.css">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="linear-grad">
+        <section class="container mb-5 px-3" id="schedule">
+            <h1 class="text-center pb-4">Our Schedule</h1>
+            <table class="table table-sm" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th class="text-center">Time</th>
+                        <th>Senin</th>
+                        <th>Selasa</th>
+                        <th>Rabu</th>
+                        <th>Kamis</th>
+                        <th>Jum'at</th>
+                        <th>Sabtu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>09:00-11:00</td>
+                        <td class="text-start" id="slot1"></td>
+                        <td class="text-start" id="slot2"></td>
+                        <td class="text-start" id="slot3"></td>
+                        <td class="text-start" id="slot4"></td>
+                        <td class="text-start" id="slot5"></td>
+                        <td class="text-start" id="slot6"></td>
+                    </tr>
+                    <tr>
+                        <td>12:00-14:00</td>
+                        <td class="text-start" id="slot7"></td>
+                        <td class="text-start" id="slot8"></td>
+                        <td class="text-start" id="slot9"></td>
+                        <td class="text-start" id="slot10"></td>
+                        <td class="text-start" id="slot11"></td>
+                        <td class="text-start" id="slot12"></td>
+                    </tr>
+                    <tr>
+                        <td>15:00-17:00</td>
+                        <td class="text-start" id="slot13"></td>
+                        <td class="text-start" id="slot14"></td>
+                        <td class="text-start" id="slot15"></td>
+                        <td class="text-start" id="slot16"></td>
+                        <td class="text-start" id="slot17"></td>
+                        <td class="text-start" id="slot18"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="container" id="bookingSection" style="display: none;">
+            <h2 class="text-center pb-3">Jadwalkan sesi konseling Anda</h2>
+            <form onsubmit="return bookSession()">
+                <div class="slot-form-container">
+                    <label class="pb-3" for="email">Email</label>
+                    <input class="input" type="email" name="email" placeholder="Enter your email" required>
+                </div><br>
+                <div class="slot-form-container">
+                    <label class="pb-3" for="phoneNumber">No HP</label>
+                    <input class="input" type="text" name="phoneNumber" placeholder="Enter your phone number" required>
+                </div><br>
+                <div class="slot-form-container">
+                    <label class="pb-3" for="date">Date</label>
+                    <input class="input" type="date" name="date" id="selectedDate" placeholder="dd/mm/yyyy" required>
+                </div><br>
+                <div class="slot-form-container">
+                    <label class="pb-3" for="time">Time</label>
+                    <select class="form-select" name="time" id="sessionTime" required>
+                        <option value="pagi">9:00 - 11:00</option>
+                        <option value="siang">12:00 - 14:00</option>
+                        <option value="sore">15:00 - 17:00</option>
+                    </select>
+                </div><br>
+                <div class="slot-form-container">
+                    <input class="btn" type="submit" value="Book your session!">
+                </div>
+            </form>
+
+            <button class="btnlogout" onclick="logOut()">Sign Out</button>
+        </section>
+    </div>
+
+    <script>
+        const scheduledSessions = {
+            pagi: ['', '', '', '', '', ''],
+            siang: ['', '', '', '', '', ''],
+            sore: ['', '', '', '', '', '']
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+            if (isLoggedIn) {
+                document.getElementById('bookingSection').style.display = 'block';
+            } else {
+                alert('Anda belum login. Redirect ke halaman login...');
+                window.location.href = 'login.html';
+            }
+
+            const today = new Date();
+            const maxDate = new Date(today);
+            maxDate.setDate(today.getDate() + 7);
+            document.getElementById('selectedDate').min = today.toISOString().split('T')[0];
+            document.getElementById('selectedDate').max = maxDate.toISOString().split('T')[0];
+        });
+
+        function bookSession() {
+            const email = document.getElementsByName('email')[0].value;
+            const phoneNumber = document.getElementsByName('phoneNumber')[0].value;
+            const date = new Date(document.getElementById('selectedDate').value);
+            const time = document.getElementById('sessionTime').value;
+
+            if (date.getUTCDay() === 0) {
+                alert('Maaf, hari Minggu tutup. Pilih tanggal lain.');
+                return false;
+            }
+
+            const dayIndex = date.getUTCDay();
+            let slotId;
+            let index;
+            if (time === 'pagi') {
+                index = dayIndex;
+            } else if (time === 'siang') {
+                index = 6 + dayIndex;
+            } else if (time === 'sore') {
+                index = 12 + dayIndex;
+            }
+
+            slotId = `slot${index}`;
+
+            console.log(dayIndex);
+            scheduledSessions[time][dayIndex] = { email, phoneNumber };
+            document.getElementById(slotId).innerText = 'Booked';
+
+            return false;
+        }
+
+        function logOut() {
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = 'login.html';
+    }
+
+    </script>
+</body>
+
+</html>
